@@ -1,0 +1,2 @@
+class GeneticLabServer:
+    pass

@@ -1,3 +1,9 @@
 import deap
 
-print("Hello I am a server I do server things")
+
+def main():
+    print("Hello I am a server I do server things")
+
+
+if __name__ == "__main__":
+    main()

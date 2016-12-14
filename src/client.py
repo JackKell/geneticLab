@@ -1,3 +1,8 @@
 import deap
 
-print("Hello I am a client")
+
+def main():
+    print("I am a client")
+
+if __name__ == "__main__":
+    main()
