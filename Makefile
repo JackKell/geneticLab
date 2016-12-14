@@ -9,12 +9,12 @@ setup:
 client:
 	if [[ "$(VIRTUAL_ENV)" != "" ]]; then deactivate; fi
 	bash -c "source venv/bin/activate; \
-	python ./src/client.py;"
+	python client.py;"
 
 server:
 	if [[ "$(VIRTUAL_ENV)" != "" ]]; then deactivate; fi
 	bash -c "source venv/bin/activate; \
-	python ./src/server.py;"
+	python server.py;"
 
 clean:
 	if [[ "$(VIRTUAL_ENV)" != "" ]]; then deactivate; fi
