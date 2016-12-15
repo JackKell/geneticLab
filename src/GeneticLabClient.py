@@ -1,5 +1,5 @@
 import os
-from time import sleep
+
 
 class GeneticLabClient:
     def __init__(self):
