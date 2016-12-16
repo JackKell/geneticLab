@@ -1,10 +1,13 @@
 import os
+from src.GeneticLabNode import GeneticLabNode
 
 
-class GeneticLabClient:
-    def __init__(self):
+class GeneticLabClient(GeneticLabNode):
+    def __init__(self, port):
+        super().__init__(port)
         self.mainMenuOptions = ["Run Experiment", "View Running", "Exit"]
         self.runExperimentOptions = ["Cannon", "Back to Main Menu"]
+        self.serverAddress = "127.0.0.1"
 
     def getUserOption(self, optionList):
         while True:
@@ -100,12 +103,23 @@ class GeneticLabClient:
             print("mutationRate", mutationRate)
             print("populationSize", populationSize)
             print("numberOfGenerations", numberOfGenerations)
+            print("")
+            print("Running Simulation on cluster please wait...")
+            data = {"requestType": "cannonSimulation",
+                    "minCannonLength": minCannonLength,
+                    "maxCannonLength": maxCannonLength,
+                    "minBoreWidth": minBoreWidth,
+                    "maxBoreWidth": maxBoreWidth,
+                    "maxAngle": maxAngle,
+                    "crossOverRate": crossOverRate,
+                    "mutationRate": mutationRate,
+                    "populationSize": populationSize,
+                    "numberOfGenerations": numberOfGenerations}
 
-            runSim = self.getBooleanInput("Do you want to send this cannon simulation to be ran by the server (y/n)")
-            if runSim:
-                print("Sending simulation to server")
-            else:
-                print("The simulation will not be sent to the server")
+            message = self.encodeMessage(data)
+            returnMessage = self.sendMessage(message, self.serverAddress)
+            print(returnMessage)
+            print("Finished")
 
             input("Press Enter to go back to the main menu\n>> ")
             self.mainMenu()
@@ -125,5 +139,25 @@ class GeneticLabClient:
         os.system('cls' if os.name == "nt" else "clear")
 
     def run(self):
-        self.mainMenu()
+        #self.mainMenu()
+        print("temp running")
+        data = {"requestType": "cannonSimulation",
+                    "minCannonLength": 1,
+                    "maxCannonLength": 1,
+                    "minBoreWidth": 1,
+                    "maxBoreWidth": 1,
+                    "maxAngle": 1,
+                    "crossOverRate": 1,
+                    "mutationRate": 1,
+                    "populationSize": 1,
+                    "numberOfGenerations": 1}
+        message = self.encodeMessage(data)
+        returnMessage = self.sendMessage(message, self.serverAddress)
+        print(returnMessage)
+
+
+    def getSimulationResults(self):
+        pass
+
+
 

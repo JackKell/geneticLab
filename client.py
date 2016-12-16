@@ -1,7 +1,7 @@
 from src.GeneticLabClient import GeneticLabClient
 
 def main():
-    geneticLabClient = GeneticLabClient()
+    geneticLabClient = GeneticLabClient(9000)
     geneticLabClient.run()
 
 

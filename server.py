@@ -1,8 +1,8 @@
-import deap
-
+from src.GeneticLabServer import GeneticLabServer
 
 def main():
-    print("Hello I am a server I do server things")
+    geneticLabServer = GeneticLabServer(9000)
+    geneticLabServer.run()
 
 
 if __name__ == "__main__":
