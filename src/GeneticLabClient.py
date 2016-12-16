@@ -3,11 +3,11 @@ from src.GeneticLabNode import GeneticLabNode
 
 
 class GeneticLabClient(GeneticLabNode):
-    def __init__(self, port):
+    def __init__(self, port, serverAddress):
         super().__init__(port)
         self.mainMenuOptions = ["Run Experiment", "View Running", "Exit"]
         self.runExperimentOptions = ["Cannon", "Back to Main Menu"]
-        self.serverAddress = "127.0.0.1"
+        self.serverAddress = serverAddress
 
     def getUserOption(self, optionList):
         while True:
