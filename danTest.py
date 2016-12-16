@@ -20,11 +20,11 @@ MAX_launchAngle = 90
 MAX_platformHeight = 3.048
 MAX_gunPowderMass = 1.36078
 
-MIN_boreWidth = 0.1
-MIN_boreLength = 1
-MIN_launchAngle = 10
-MIN_platformHeight = 1
-MIN_gunPowderMass = 1
+MIN_boreWidth = 0
+MIN_boreLength = 0
+MIN_launchAngle = 45
+MIN_platformHeight = 0
+MIN_gunPowderMass = 0
 
 SUN = 274.0
 JUPITER = 24.92
@@ -38,7 +38,7 @@ MERCURY = 3.7
 MOON = 1.62
 PLUTO = 0.58
 
-targetDistance = 25 # Meters
+targetDistance = 200 # Meters
 gravity = EARTH
 
 def getDistanceShot(cannon):
@@ -102,6 +102,15 @@ def evaluate(individual):
 def randFun():
     return random.random()
 
+def makeAttributeList():
+    attributes = []
+    attributes.append(random.uniform(MIN_boreWidth, MAX_boreWidth))
+    attributes.append(random.uniform(MIN_boreLength, MAX_boreLength))
+    attributes.append(random.uniform(MIN_launchAngle, MAX_launchAngle))
+    attributes.append(random.uniform(MIN_platformHeight, MAX_platformHeight))
+    attributes.append(random.uniform(MIN_gunPowderMass, MAX_gunPowderMass))
+    return attributes
+
 # Fitness model class. Dual minimization problem - minimize hit distance from target and time to hit target. Inhherets from the base Fitness class
 #creator.create("FitnessMulti", base.Fitness, weights=(-1.0, -1.0))
 creator.create("FitnessMulti", base.Fitness, weights=(-1.0,))
@@ -110,14 +119,19 @@ creator.create("FitnessMulti", base.Fitness, weights=(-1.0,))
 creator.create("Individual", list, fitness=creator.FitnessMulti)
 
 # Attributes:  boreWidth, boreLength, gunPowderMass, launchAngle, platformHeight)
-IND_SIZE = 5 # The number of cannon attributes
+#IND_SIZE = 5 # The number of cannon attributes
 
 toolbox = base.Toolbox() # Inheret base toolbox
 #toolbox.register("attribute", random.random) # Add tool for attribute initialization
 toolbox.register("attribute", randFun) # Add tool for attribute initialization
+
+toolbox.register("attributeList", makeAttributeList) # Add tool for attribute initialization
+
 # Add tool for making a cannon from random attributes
-toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.attribute, n=IND_SIZE)
-# Add a tool for creating a population of 100 cannons
+#toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.attribute, n=IND_SIZE)
+toolbox.register("individual", tools.initIterate, creator.Individual, toolbox.attributeList)
+
+# Add a tool for creating a population of cannons
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 # Add standard tools
 toolbox.register("evaluate", evaluate)
@@ -184,6 +198,8 @@ def main():
     print(fits[bestIndex])
     print("best individual:")
     print(pop[bestIndex])
+    print("confirm fitness:")
+    print(evaluate(pop[bestIndex]))
     #print(pop[0])
     print("Done")
 
