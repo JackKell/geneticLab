@@ -74,44 +74,63 @@ class GeneticLabClient(GeneticLabNode):
         if optionChosen == "Cannon":
             print("Build a cannon Simulation")
             useDefault = self.getBooleanInput("Do you want to use the default cannon settings (y/n)")
-            minCannonLength = 1
-            maxCannonLength = 3
+            minBoreLength = 1
+            maxBoreLength = 3
             minBoreWidth = 0.10
             maxBoreWidth = 0.30
-            maxAngle = 90
-            crossOverRate = 0.65
-            mutationRate = 0.01
+            minLaunchAngle = 20
+            maxLaunchAngle = 90
+            minPlatformHeight = 0
+            maxPlatformHeight = 1
+            minGunPowderMass = 1
+            maxGunPowderMass = 10
+            crossoverRate = 0.65
+            mutationRate = 0.05
             populationSize = 100
             numberOfGenerations = 1000
             if not useDefault:
-                minCannonLength = self.getNumberInput("Min cannon length (meters)", 0)
-                maxCannonLength = self.getNumberInput("Max cannon length (meters)", minCannonLength)
+                minBoreLength = self.getNumberInput("Min cannon length (meters)", 0)
+                maxBoreLength = self.getNumberInput("Max cannon length (meters)", minBoreLength)
                 minBoreWidth = self.getNumberInput("Min bore width (meters)", 0)
                 maxBoreWidth = self.getNumberInput("Max bore width (meters)", minBoreWidth)
-                maxAngle = self.getNumberInput("Max launch angle (degrees)", 0, 180)
-                crossOverRate = self.getNumberInput("Crossover rate (float between 0 and 1)", 0, 1)
+                minLaunchAngle = self.getNumberInput("Min launch angle (degrees)", 0, 180)
+                maxLaunchAngle = self.getNumberInput("Max launch angle (degrees)", minLaunchAngle, 180)
+                minPlatformHeight = 0
+                maxPlatformHeight = 1
+                minGunPowderMass = 1
+                maxGunPowderMass = 10
+                crossoverRate = self.getNumberInput("Crossover rate (float between 0 and 1)", 0, 1)
                 mutationRate = self.getNumberInput("Mutation rate (float between 0 and 1)", 0, 1)
-                populationSize = self.getNumberInput("Population size", castToType=int)
-                numberOfGenerations = self.getNumberInput("Number of generations", castToType=int)
+                populationSize = self.getNumberInput("Population size", 5, castToType=int)
+                numberOfGenerations = self.getNumberInput("Number of generations", 1, castToType=int)
             print("The current settings: ")
-            print("minCannonLength", minCannonLength)
-            print("maxCannonLength", maxCannonLength)
+            print("minBoreLength", minBoreLength)
+            print("maxBoreLength", maxBoreLength)
             print("minBoreWidth", minBoreWidth)
             print("maxBoreWidth", maxBoreWidth)
-            print("maxAngle", maxAngle)
-            print("crossOverRate", crossOverRate)
+            print("maxLaunchAngle", maxLaunchAngle)
+            print("minPlatformHeight", minPlatformHeight)
+            print("maxPlatformHeight", maxPlatformHeight)
+            print("minGunPowderMass", minGunPowderMass)
+            print("maxGunPowderMass", maxGunPowderMass)
+            print("crossoverRate", crossoverRate)
             print("mutationRate", mutationRate)
             print("populationSize", populationSize)
             print("numberOfGenerations", numberOfGenerations)
             print("")
             print("Running Simulation on cluster please wait...")
             data = {"requestType": "cannonSimulation",
-                    "minCannonLength": minCannonLength,
-                    "maxCannonLength": maxCannonLength,
+                    "minBoreLength": minBoreLength,
+                    "maxBoreLength": maxBoreLength,
                     "minBoreWidth": minBoreWidth,
                     "maxBoreWidth": maxBoreWidth,
-                    "maxAngle": maxAngle,
-                    "crossOverRate": crossOverRate,
+                    "minLaunchAngle": minLaunchAngle,
+                    "maxLaunchAngle": maxLaunchAngle,
+                    "minPlatformHeight": minPlatformHeight,
+                    "maxPlatformHeight": maxPlatformHeight,
+                    "minGunPowderMass": minGunPowderMass,
+                    "maxGunPowderMass": maxGunPowderMass,
+                    "crossoverRate": crossoverRate,
                     "mutationRate": mutationRate,
                     "populationSize": populationSize,
                     "numberOfGenerations": numberOfGenerations}
@@ -140,17 +159,23 @@ class GeneticLabClient(GeneticLabNode):
 
     def run(self):
         #self.mainMenu()
-        print("temp running")
+        print("temp send message")
         data = {"requestType": "cannonSimulation",
-                    "minCannonLength": 1,
-                    "maxCannonLength": 1,
-                    "minBoreWidth": 1,
-                    "maxBoreWidth": 1,
-                    "maxAngle": 1,
-                    "crossOverRate": 1,
-                    "mutationRate": 1,
-                    "populationSize": 1,
-                    "numberOfGenerations": 1}
+                "minBoreWidth": 1,
+                "maxBoreWidth": 1,
+                "minBoreLength": 1,
+                "maxBoreLength": 1,
+                "minLaunchAngle": 1,
+                "maxLaunchAngle": 1,
+                "minPlatformHeight": 1,
+                "maxPlatformHeight": 1,
+                "minGunPowderMass": 1,
+                "maxGunPowderMass": 1,
+                "crossoverRate": 1,
+                "mutationRate": 1,
+                "populationSize": 1,
+                "numberOfGenerations": 1,
+                "targetDistance": 1}
         message = self.encodeMessage(data)
         returnMessage = self.sendMessage(message, self.serverAddress)
         print(returnMessage)
