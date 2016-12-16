@@ -13,5 +13,5 @@ make client
 ```
 ### Run Server
 ```
-make client
+make server
 ```

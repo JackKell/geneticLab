@@ -20,7 +20,11 @@ class Cannon(object):
 
     @property
     def chargeLength(self):
-        return self.gunPowderMass * 4 / (pi * self.boreWidth * self.boreWidth * self.GUN_POWDER_DENSITY)
+        den = (pi * self.boreWidth * self.boreWidth * self.GUN_POWDER_DENSITY)
+        if den == 0:
+            return 0
+        else:
+            return self.gunPowderMass * 4 / den
 
     @property
     def muzzleVelocity(self):
@@ -29,11 +33,14 @@ class Cannon(object):
         if (self.chargeLength + self.boreWidth > self.boreLength):
             muzzleVelocity = 0
         else:
-            muzzleVelocity = (
-                    sqrt(2 * self.R * self.ATM / self.GUN_POWDER_DENSITY) *
-                    sqrt(self.gunPowderMass / (self.ballMass + self.gunPowderMass / 3) *
-                         log(self.boreLength / self.chargeLength)
-                    )
+            if ((self.ballMass + self.gunPowderMass / 3) == 0) | (self.chargeLength == 0):
+                muzzleVelocity = 0
+            else:
+                muzzleVelocity = (
+                        sqrt(2 * self.R * self.ATM / self.GUN_POWDER_DENSITY) *
+                        sqrt(self.gunPowderMass / (self.ballMass + self.gunPowderMass / 3) *
+                            log(self.boreLength / self.chargeLength)
+                        )
             )
             if isnan(muzzleVelocity):
                 muzzleVelocity = 0
