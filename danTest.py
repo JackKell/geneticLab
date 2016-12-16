@@ -6,26 +6,14 @@ from math import cos
 from math import sqrt
 from math import sin
 from math import pi
-import gravity
+from src.gravity import Gravity
 
 # Fitness algorithm
-#def evaluate(individual):
+# def evaluate(individual):
 #    return sum(individual), sum(individual)
 
-SUN = 274
-JUPITER = 24.92
-NEPTUNE = 11.15
-SATURN = 10.44
-EARTH = 9.807
-URUNUS = 8.87
-VENUS = 8.87
-MARS = 3.71
-MERCURY = 3.7
-MOON = 1.62
-PLUTO = 0.58
-
 targetDistance = 25 # Meters
-gravity = EARTH
+gravity = Gravity.EARTH
 
 def getDistanceShot(cannon):
     # TODO: add wind resistance to calculations
