@@ -7,13 +7,43 @@ from math import sqrt
 from math import sin
 from math import pi
 from src.gravity import Gravity
+from math import isnan
+#import sys
 
 # Fitness algorithm
 # def evaluate(individual):
 #    return sum(individual), sum(individual)
 
+SUN = 274.0
+JUPITER = 24.92
+NEPTUNE = 11.15
+SATURN = 10.44
+EARTH = 9.807
+URUNUS = 8.87
+VENUS = 8.87
+MARS = 3.71
+MERCURY = 3.7
+MOON = 1.62
+PLUTO = 0.58
+
 targetDistance = 25 # Meters
-gravity = Gravity.EARTH
+gravity = EARTH
+
+'''
+const double maxBoreWidth = 0.3048; // meters
+const double maxBoreLength = 1.524; // meters
+const double maxAngle = 90; // degrees
+const double maxPlatformHeight = 3.048; // meters
+const double maxGunPowderMass = 1.36078; // kilograms
+'''
+def feasible(individual):
+    """Feasibility function for the individual. Returns True if feasible False
+    otherwise."""
+    #boreWidth, boreLength, launchAngle, platformHeight, gunPowderMass
+    if (individual[0] < 0.3048) & (individual[1] < 1.524) & (individual[2] < 90) & (individual[3] < 3.048) & (individual[4] < 1.36078):
+        return True
+    return False
+
 
 def getDistanceShot(cannon):
     # TODO: add wind resistance to calculations
@@ -32,7 +62,13 @@ def getFlightTime(cannon):
     print(getDistanceShot(cannon))
     print(muzzleVelocity)
     print(cos(angleRadians))
-    flightTime = getDistanceShot(cannon) / (muzzleVelocity * cos(angleRadians))
+    flightTime = None
+    den = muzzleVelocity * cos(angleRadians)
+
+    if (den == 0):
+        flightTime = 0
+    else:
+        flightTime = getDistanceShot(cannon) / den
     if isnan(flightTime):
         flightTime = 0
     return flightTime
@@ -52,10 +88,10 @@ def evaluate(individual):
 
     distanceToTarget = getDistanceToTarget(cannon)
     flightTime = getFlightTime(cannon)
-    if (flightTime != 0 & distanceToTarget != targetDistance):
+    if (flightTime != 0) & (distanceToTarget != targetDistance):
         fitness = distanceToTarget + flightTime * 70
     else:
-        fitness = DBL_MAX
+        fitness = float("inf")
 
     return fitness, 1
 
@@ -80,13 +116,14 @@ toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.att
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 # Add standard tools
 toolbox.register("evaluate", evaluate)
+toolbox.decorate("evaluate", tools.DeltaPenality(feasible, float("inf")))
 toolbox.register("mate", tools.cxTwoPoint)
 toolbox.register("mutate", tools.mutFlipBit, indpb=0.05)
 toolbox.register("select", tools.selTournament, tournsize=3)
 
 def run():
     # initialize population size 50
-    pop = toolbox.population(n=2)
+    pop = toolbox.population(n=10)
 
     # crossover probablity, mutation probablity, number of generations
     CXPB, MUTPB, NGEN = 0.5, 0.2, 100
