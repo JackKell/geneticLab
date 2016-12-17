@@ -161,14 +161,16 @@ class GeneticLabServer(SyncObj, GeneticLabNode):
             # The population is entirely replaced by the offspring
             pop[:] = offspring
 
-            print("_______________________")
-            print("best fitness:")
             fits = [ind.fitness.values[0] for ind in pop]
             bestIndex = fits.index(min(fits))
             # best fitness
             bestFitness = fits[bestIndex]
             # best individual
             bestInividual = pop[bestIndex]
+
+            print("_______________________")
+            print("best fitness: " + str(bestFitness))
+            print("best inividual: " + str(bestInividual))
             return (bestInividual, bestFitness)
 
     def openSocket(self):
