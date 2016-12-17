@@ -201,7 +201,7 @@ class GeneticLabServer(SyncObj, GeneticLabNode):
                     if request["distr"] == True:
                         request["distr"] = False
                         message = self.encodeMessage(request)
-                        for server in servers:
+                        for server in self.servers:
                             tcpSocket = socket(AF_INET, SOCK_STREAM)
                             tcpSocket.connect((server, self.port))
                             #tcpSocket.settimeout(self.timeout)
