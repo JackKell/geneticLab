@@ -30,7 +30,7 @@ class GeneticLabNode:
         print("To send: " + str(message))
         tcpSocket.send(message)
         data = tcpSocket.recv(self.bufferSize)
-        print("Received: " + data)
+        print("Received: " + str(data))
         data = self.decodeMessage(data)
         tcpSocket.close()
         return data
