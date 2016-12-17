@@ -1,7 +1,10 @@
 from src.GeneticLabServer import GeneticLabServer
 
 def main():
-    geneticLabServer = GeneticLabServer(9000)
+    servers = []
+    servers.append("172.22.71.28")
+    servers.append("172.22.71.29")
+    geneticLabServer = GeneticLabServer(9000, servers)
     geneticLabServer.run()
 
 

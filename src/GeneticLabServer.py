@@ -212,12 +212,13 @@ class GeneticLabServer(SyncObj, GeneticLabNode):
                             returnMessage.append(data)
 
                     # run request itself
-                    bestIndividual, bestFitness = self.runCannonSimulation(request)
+                    #bestIndividual, bestFitness = self.runCannonSimulation(request)
 
                     # put ours in at the end
-                    returnMessage.append((bestIndividual, bestFitness))
-                    response = self.encodeMessage(returnMessage)
+                    #returnMessage.append((bestIndividual, bestFitness))
 
+
+                    response = self.encodeMessage(returnMessage)
                     connection.sendall(response)
                     self.connections.task_done()
 
