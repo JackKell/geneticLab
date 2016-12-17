@@ -202,20 +202,15 @@ class GeneticLabServer(SyncObj, GeneticLabNode):
                         request["distr"] = False
                         message = self.encodeMessage(request)
                         for server in self.servers:
-                            tcpSocket = socket(AF_INET, SOCK_STREAM)
-                            tcpSocket.connect((server, self.port))
-                            #tcpSocket.settimeout(self.timeout)
-                            tcpSocket.send(message)
-                            data = tcpSocket.recv(self.bufferSize)
-                            data = self.decodeMessage(data)
-                            tcpSocket.close()
+                            data = self.sendMessage(message, server)
                             returnMessage.append(data)
 
                     # run request itself
-                    #bestIndividual, bestFitness = self.runCannonSimulation(request)
+                    else:
+                        bestIndividual, bestFitness = self.runCannonSimulation(request)
 
-                    # put ours in at the end
-                    #returnMessage.append((bestIndividual, bestFitness))
+                        # put ours in at the end
+                        returnMessage.append((bestIndividual, bestFitness))
 
 
                     response = self.encodeMessage(returnMessage)
