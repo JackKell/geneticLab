@@ -27,10 +27,8 @@ class GeneticLabNode:
 
         tcpSocket.connect((destinationAddress, self.port))
         tcpSocket.settimeout(self.timeout)
-        print("To send: " + str(message))
         tcpSocket.send(message)
         data = tcpSocket.recv(self.bufferSize)
-        print("Received: " + str(data))
         data = self.decodeMessage(data)
         tcpSocket.close()
         return data
