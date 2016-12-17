@@ -84,6 +84,7 @@ class GeneticLabClient(GeneticLabNode):
             maxPlatformHeight = 1
             minGunPowderMass = 1
             maxGunPowderMass = 10
+            targetDistance = 300
             crossoverRate = 0.65
             mutationRate = 0.05
             populationSize = 100
@@ -95,10 +96,11 @@ class GeneticLabClient(GeneticLabNode):
                 maxBoreWidth = self.getNumberInput("Max bore width (meters)", minBoreWidth)
                 minLaunchAngle = self.getNumberInput("Min launch angle (degrees)", 0, 180)
                 maxLaunchAngle = self.getNumberInput("Max launch angle (degrees)", minLaunchAngle, 180)
-                minPlatformHeight = 0
-                maxPlatformHeight = 1
-                minGunPowderMass = 1
-                maxGunPowderMass = 10
+                minPlatformHeight = self.getNumberInput("Min platform height (meters)", 0)
+                maxPlatformHeight = self.getNumberInput("Min platform height (meters)", minPlatformHeight)
+                minGunPowderMass = self.getNumberInput("Min gun powder mass (kg)", 0)
+                maxGunPowderMass = self.getNumberInput("Max gun powder mass (kg)", minGunPowderMass)
+                targetDistance = self.getNumberInput("The target distance (meters)", 1)
                 crossoverRate = self.getNumberInput("Crossover rate (float between 0 and 1)", 0, 1)
                 mutationRate = self.getNumberInput("Mutation rate (float between 0 and 1)", 0, 1)
                 populationSize = self.getNumberInput("Population size", 5, castToType=int)
@@ -113,6 +115,7 @@ class GeneticLabClient(GeneticLabNode):
             print("maxPlatformHeight", maxPlatformHeight)
             print("minGunPowderMass", minGunPowderMass)
             print("maxGunPowderMass", maxGunPowderMass)
+            print("targetDistance", targetDistance)
             print("crossoverRate", crossoverRate)
             print("mutationRate", mutationRate)
             print("populationSize", populationSize)
@@ -134,7 +137,7 @@ class GeneticLabClient(GeneticLabNode):
                     "mutationRate": mutationRate,
                     "populationSize": populationSize,
                     "numberOfGenerations": numberOfGenerations,
-                    "targetDistance": 1,
+                    "targetDistance": targetDistance,
                     "distr": True}
 
             message = self.encodeMessage(data)
