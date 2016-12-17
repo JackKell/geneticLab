@@ -11,13 +11,14 @@ import random
 
 
 class GeneticLabServer(SyncObj, GeneticLabNode):
-    def __init__(self, port):
+    def __init__(self, port, servers):
         SyncObj.__init__(self, 'localhost:1337', [])
         GeneticLabNode.__init__(self, port)
         self.cannonResults = []
         self.tcpSocket = socket()
         self.workerThreads = list()
         self.connections = Queue()
+        self.servers = servers
 
     @replicated
     def __saveResult(self, request, results):
@@ -195,11 +196,34 @@ class GeneticLabServer(SyncObj, GeneticLabNode):
                 connection, address = self.connections.get()
                 data = connection.recv(self.bufferSize)
                 request = self.decodeMessage(data)
+                returnMessage = []
                 if request["requestType"] == "cannonSimulation":
+                    if request["distr"] == True:
+                        request["distr"] = False
+                        message = self.encodeMessage(request)
+                        for server in servers:
+                            tcpSocket = socket(AF_INET, SOCK_STREAM)
+                            tcpSocket.connect((server, self.port))
+                            #tcpSocket.settimeout(self.timeout)
+                            tcpSocket.send(message)
+                            data = tcpSocket.recv(self.bufferSize)
+                            data = self.decodeMessage(data)
+                            tcpSocket.close()
+                            returnMessage.append(data)
+
+                    # run request itself
                     bestIndividual, bestFitness = self.runCannonSimulation(request)
-                print(request)
-                response = self.encodeMessage({"requestType": "cannonResult"})
-                connection.sendall(response)
-                self.connections.task_done()
+
+                    # put ours in at the end
+                    returnMessage.append((bestIndividual, bestFitness))
+                    response = self.encodeMessage(returnMessage)
+
+                    connection.sendall(response)
+                    self.connections.task_done()
 
 
+                # return responses/response to client or source server
+                #print(request)
+                #response = self.encodeMessage({"requestType": "cannonResult"})
+                #connection.sendall(response)
+                #self.connections.task_done()

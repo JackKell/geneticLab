@@ -133,7 +133,8 @@ class GeneticLabClient(GeneticLabNode):
                     "crossoverRate": crossoverRate,
                     "mutationRate": mutationRate,
                     "populationSize": populationSize,
-                    "numberOfGenerations": numberOfGenerations}
+                    "numberOfGenerations": numberOfGenerations,
+                    "distr": True}
 
             message = self.encodeMessage(data)
             returnMessage = self.sendMessage(message, self.serverAddress)
@@ -183,6 +184,3 @@ class GeneticLabClient(GeneticLabNode):
 
     def getSimulationResults(self):
         pass
-
-
-
