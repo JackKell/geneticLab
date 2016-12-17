@@ -203,7 +203,7 @@ class GeneticLabServer(SyncObj, GeneticLabNode):
                         message = self.encodeMessage(request)
                         for server in self.servers:
                             data = self.sendMessage(message, server)
-                            returnMessage.append(data)
+                            returnMessage.append(data[0])
 
                     # run request itself
                     else:
