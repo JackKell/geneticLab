@@ -29,7 +29,7 @@ class GeneticLabNode:
         tcpSocket.settimeout(self.timeout)
         tcpSocket.send(message)
         data = tcpSocket.recv(self.bufferSize)
-
+        print(data)
         data = self.decodeMessage(data)
         tcpSocket.close()
         return data
