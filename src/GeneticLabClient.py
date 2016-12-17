@@ -134,6 +134,7 @@ class GeneticLabClient(GeneticLabNode):
                     "mutationRate": mutationRate,
                     "populationSize": populationSize,
                     "numberOfGenerations": numberOfGenerations,
+                    "targetDistance": 1,
                     "distr": True}
 
             message = self.encodeMessage(data)
@@ -176,7 +177,9 @@ class GeneticLabClient(GeneticLabNode):
                 "mutationRate": 1,
                 "populationSize": 1,
                 "numberOfGenerations": 1,
-                "targetDistance": 1}
+                "targetDistance": 1,
+                "distr": True}
+
         message = self.encodeMessage(data)
         returnMessage = self.sendMessage(message, self.serverAddress)
         print(returnMessage)
